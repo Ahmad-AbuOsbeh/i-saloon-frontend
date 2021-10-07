@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@100&display=swap');
+.ahheader{
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+    z-index: 200000;
+    background-color: #1f2024;
+    justify-content: space-between;
+    border-bottom: #a38350 solid 1px;
+}
+
+.logoText{
+    position:absolute;
+    left: 3.5rem;
+    font-size:1.5rem;
+    color:#f1f1f1;
+    letter-spacing:1px;
+    font-family: 'Josefin Slab', serif;
+    font-weight: 800;
+}
+
+.spanLogo{
+    font-size:1.5rem;
+    color:#a38350 ;
+    font-family:'Josefin Slab', serif;
+}
+
+
+.ahlogo{
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    color:  #edf0f1;
+    padding-left: 1rem;
+}
+
+.nav__link{
+    
+    list-style: none;
+    padding: 0px 0px 0px 0px;
+
+}
+
+.aanav__link li{
+    display: inline-block;
+    font-size: 1.5rem;
+    padding: 0px 20px;
+    cursor: pointer;
+
+}
+.aanav__link:nth-child(4) div svg{
+    position: absolute;
+}
+
+.aanav__link li a {
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+    color:  #edf0f1;
+
+}
+
+.aanav__link li a:hover {
+    color: #a38350;
+}
+
+.AhlogOut{
+    padding: 9px 25px;
+    margin: 1rem;
+    background-color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    font-weight: 500;
+}
+
+.AhlogOut:hover{
+    background-color: #a38350;
+    padding: 9px 25px;
+}
