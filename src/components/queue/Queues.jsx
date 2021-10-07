@@ -53,8 +53,8 @@ export default function Queues() {
   const { id } = useParams();
   // fetch queues
   async function fetchQueues() {
-    const response = await instance.get(`/barber/queue/${1}/0`);
-    console.log(response.data);
+    const response = await instance.get(`/barber/queue/${27}/0`);
+    console.log('im response',response.data);
     setAllQueues(response.data);
   }
   useEffect(() => {
@@ -84,6 +84,8 @@ export default function Queues() {
   function removeTicketHandler(startIndex) {
     const allTicketsUpdated = allTickets.filter((item) => item.startIndex != startIndex);
     setallTickets(allTicketsUpdated);
+    
+    
   }
   // did update on all tickets
   useEffect(() => {
@@ -200,20 +202,6 @@ export default function Queues() {
   };
   return (
     <div className={style.bigContainer}>
-      <h1 style={{ color: 'white', marginLeft: '5rem' }}>Client Orders :</h1>
-      <form style={{ color: 'white', marginLeft: '5rem' }} onSubmit={addTicketHandler}>
-        <label>booking time</label>
-        <br />
-        <input type='float' name='bookingTime'></input>
-        <br />
-
-        <label>service period</label>
-        <br />
-
-        <input type='number' name='servicePeriod'></input>
-        <button>add ticket</button>
-      </form>
-      <br />
       <div style={style.timeLineContainer}>
         {/* <hr style={{ color: 'red' }} /> */}
         <p style={{ float: 'left', position: 'absolute', top: '-1rem', color: 'white' }}>{startWorkingHour}:00</p>
