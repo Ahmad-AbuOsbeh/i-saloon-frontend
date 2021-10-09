@@ -4,24 +4,27 @@ import instance, { url } from '../../API/axios';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-
-function RatedCard({ barber }) {
+function RatedCard({ barber, clientSubscriptions, fetchClientSubscriptions }) {
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const clientId = useSelector((state) => state?.authReducer?.user?.id);
-  
+  let role = useSelector((state) => state?.authReducer?.role);
+  // console.log('roleee', role);
+  const id = useSelector((state) => state?.authReducer?.user?.id);
+  let clientId;
+  role === 'client' ? (clientId = id) : (clientId = 0);
+  // console.log('client id', clientId);
 
-  
   // subscribe handler
   async function subscribeHandler(barberId) {
     const response = await instance.post(`/client/subs`, { clientId, barberId });
-
-    console.log(response,'sub')
+    fetchClientSubscriptions();
+    console.log(response, 'sub');
     setIsSubscribed(true);
   }
 
   // Unsubscribe Handler
   async function unSubscribeHandler(barberId) {
     const response = await instance.delete(`/client/subs/${barberId}/${clientId}`);
+    fetchClientSubscriptions();
     console.log(response);
     setIsSubscribed(false);
   }
@@ -73,7 +76,7 @@ function RatedCard({ barber }) {
           <button>Visit Profile</button>
         </Link>
 
-        {isSubscribed ? (
+        {clientSubscriptions.includes(barber.id) ? (
           <button
             onClick={() => {
               unSubscribeHandler(barber.id);

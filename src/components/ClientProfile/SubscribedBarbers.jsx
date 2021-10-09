@@ -7,15 +7,14 @@ import { Rating } from '@material-ui/lab';
 import instance, { url } from '../../API/axios';
 import CreateReview from './reviews/CreateReview';
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 //generate random number between 1 and 100
 function getRandomInt() {
   return Math.floor(Math.random() * Math.floor(100));
 }
 
 function SubscribedBarbers() {
-
-  const {id} = useParams()
+  const { id } = useParams();
 
   const [barbers, setBarbers] = useState([]);
   const [review, setReview] = useState({});
@@ -23,22 +22,25 @@ function SubscribedBarbers() {
     fetchSubscribedBarbers();
     console.log('ccccc');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
 
-  function unsubscribe(id) {
-    setBarbers(barbers.filter((barber) => barber.id !== id));
-  }
   async function fetchSubscribedBarbers() {
-    
-    const response = await instance.get(`barber/subs/0/1`);
+    const response = await instance.get(`barber/subs/0/${id}`);
 
-     console.log(response.data);
-     setBarbers(response.data);
+    console.log(response.data);
+    setBarbers(response.data);
   }
+
+  // Unsubscribe Handler
+  async function unSubscribeHandler(barberId) {
+    const response = await instance.delete(`/client/subs/${barberId}/${id}`);
+    console.log('response unsub', response.data);
+    fetchSubscribedBarbers();
+  }
+
   useEffect(() => {
-    
     console.log(barbers);
-  },[barbers]);
+  }, [barbers]);
 
   // const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +54,7 @@ function SubscribedBarbers() {
         <span>{barbers?.rows?.length} subscriber </span>
       </div>
       {barbers.rows?.map((sub) => (
-        <div className={css.card} key={sub.id}>
+        <div className={css.card} key={sub.user_name}>
           <div className={css.start}>
             <img src={url + sub.profile_pic} alt={sub.name} />
             <div>
@@ -67,7 +69,7 @@ function SubscribedBarbers() {
           </div>
 
           <div className={css.end}>
-            <IconButton onClick={() => unsubscribe(sub.id)} className={css.icon} size='large'>
+            <IconButton onClick={() => unSubscribeHandler(sub.barber_id)} className={css.icon} size='large'>
               <PersonAddDisabledOutlined />
             </IconButton>
 
