@@ -5,43 +5,38 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import css from '../../../styles/reviews.module.scss';
 import { Link } from 'react-router-dom';
 import instance, { url } from '../../../../../API/axios';
-const reviews = [
-  {
-    name: 'hatem ghazi',
-    subject: 'shave',
-    text: 'awesome style plus quick as lightening',
-    rate: 5,
-    date: '04 - 10 - 2021',
-    link: '#',
-  },
-  {
-    name: 'ahmmad ammoura',
-    subject: 'hair cut',
-    text: 'good shop with good service...recommend it highly',
-    rate: 4.3,
-    date: '15 - 5- 2021',
-    link: '#',
-  },
-  {
-    name: null,
-    subject: 'shave',
-    text: 'very modern, not suitable for my age. hated it ',
-    rate: 1.8,
-    date: '26 - 7- 2021',
-    link: '#',
-  },
-];
-const barberId = 3;
+import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
+import { ExpandMore, ExpandLess, DeleteForeverOutlined, EditOutlined } from '@material-ui/icons';
 
 function Reviews() {
+  const { id } = useParams();
   const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const barberId = id;
+
+  let role = useSelector((state) => state?.authReducer?.role);
+  // console.log('roleee', role);
+  const user_id = useSelector((state) => state?.authReducer?.user?.id);
+  let clientId;
+  role === 'client' ? (clientId = user_id) : (clientId = 0);
+  // console.log('client id', clientId);
+
   useEffect(() => {
     fetchReviews();
   }, []);
+
+  // fetch Reviews
   async function fetchReviews() {
     let response = await instance.get(`client/reviews/${barberId}`);
+    console.log('response.data', barberId, response.data);
     setReviews(response.data);
+  }
+
+  // delete review
+  async function deleteReview(reviewId) {
+    const response = await instance.delete(`/client/reviews/${reviewId}`);
+    fetchReviews();
   }
   return (
     <div className={css.container}>
@@ -51,7 +46,15 @@ function Reviews() {
       {reviews.map((rev) => (
         <div className={css.card} key={rev.id}>
           <div className={css.top}>
-            <img src={`${url}${rev.profile_pic}`} alt="" />
+            <div className={css.rightbox}>
+              <span className={css.icon1}>
+                <EditOutlined />
+              </span>
+              <span className={css.icon2}>
+                <DeleteForeverOutlined onClick={() => deleteReview(rev.id)} />
+              </span>
+            </div>
+            <img src={`${url}${rev.profile_pic}`} alt='' />
             <div className={css.info}>
               <h3>{rev.user_name ? rev.user_name : 'Anonymous'} </h3>
               <span>{rev.city} </span>
@@ -59,7 +62,7 @@ function Reviews() {
           </div>
 
           <div className={css.rating}>
-            <Rating name="read-only" value={rev.rate} readOnly />
+            <Rating name='read-only' value={rev.rate} readOnly />
           </div>
 
           <div className={css.body}>
@@ -72,7 +75,7 @@ function Reviews() {
             {rev.user_name && (
               <Link to={`/my-profile/${rev.id}`}>
                 <div>
-                  <Button variant="outlined" style={{ color: '#a38350' }} size="small">
+                  <Button variant='outlined' style={{ color: '#a38350' }} size='small'>
                     <span> view profile </span> <AccountCircleOutlinedIcon />
                   </Button>
                 </div>
