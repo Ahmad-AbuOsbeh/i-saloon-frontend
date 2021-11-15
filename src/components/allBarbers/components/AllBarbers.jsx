@@ -17,12 +17,14 @@ function AllBarbers({ allBarbers }) {
   async function fetchClientSubscriptions() {
     let clientSubs = [];
     const response = await instance.get(`/barber/subs/0/${clientId}`);
+    console.log('hello from fetch client subscriptions');
     console.log('response.data subs', response.data);
     response.data.rows.map((sub) => clientSubs.push(sub.barber_id));
     setClientSubscriptions(clientSubs);
   }
   useEffect(() => {
     fetchClientSubscriptions();
+    console.log('hello from did miunt all babr');
   }, []);
 
   return (

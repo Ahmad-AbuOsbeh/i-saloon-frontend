@@ -38,8 +38,27 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
+    margin-left: -8%;
     margin-bottom: 1rem;
-
+    .rightbox {
+      position: relative;
+      left: 100%;
+    }
+    .icon1 {
+      margin-right: 0.5rem;
+      color: #1f2024;
+      :hover {
+        color: #1f2024;
+        cursor: default;
+      }
+    }
+    .icon2 {
+      margin-right: 0.5rem;
+      :hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
     img {
       border-radius: 100%;
       max-width: 80px;

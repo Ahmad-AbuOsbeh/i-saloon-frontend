@@ -65,7 +65,7 @@ function SubscribedBarbers() {
 
           <div className={css.body}>
             <Rating name='read-only' value={barbers.average ? barbers.average.average : 0} readOnly precision={0.1} />
-            <small style={{ textAlign: 'center' }}>{barbers?.average.count} Reviews</small>
+            <small style={{ textAlign: 'center' }}>{barbers?.average?.count} Reviews</small>
           </div>
 
           <div className={css.end}>
