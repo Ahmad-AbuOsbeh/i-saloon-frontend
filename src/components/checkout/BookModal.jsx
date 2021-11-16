@@ -69,22 +69,23 @@ export default function BookModal({ showModal, handleClose, barberId, cart }) {
     let mintreverse;
     let mintreverse2;
     let timeSer = x + ' ' + selectedTime.bookDate;
-    let mintreverse3;
     cart.forEach(async (service, idx) => {
       console.log('timeSer', timeSer);
       console.log(service);
-      // setTicket({ barbarId: barberId, clientId: 2, serviseId: service.id, time: timeSer });
+
       ticket = { barbarId: barberId, clientId: 2, serviseId: service.id, time: timeSer };
-      // periods.push({ period: service.estimated_time, id: service.id });
       console.log(typeof service.estimated_time, 'est');
-      hourAlone = ((totalMinutes + Number(service.estimated_time)) / 60).toFixed(2);
+      totalMinutes += Number(service.estimated_time);
+      hourAlone = (totalMinutes / 60).toFixed(2);
       console.log(hourAlone, 'hourAlone');
       hourRevers = hourAlone.toString().split('.')[0];
       mintreverse = hourAlone.toString().split('.')[1]?.substring(0, 2);
-      mintreverse2 = Math.ceil((Number(mintreverse) * 60) / 100);
-      console.log(hourRevers, mintreverse2);
-      // mintreverse2.toString().split('')[1] ? mintreverse3 = mintreverse2: mintreverse3=mintreverse2
+      mintreverse2 = Math.round((Number(mintreverse) / 100) * 60);
+      mintreverse2 <= 9 ? (mintreverse2 = `0${mintreverse2}`) : (mintreverse2 = mintreverse2);
+      console.log('hourRevers', hourRevers, 'mintreverse2', mintreverse2);
       timeSer = `${hourRevers}:${mintreverse2} ${selectedTime.bookDate}`;
+
+      console.log('requested ticket', ticket);
       const response = await instance.post('/client/tickets', ticket);
     });
 

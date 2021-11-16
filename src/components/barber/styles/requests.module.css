@@ -1,0 +1,10 @@
+.decline :hover {
+  /* color: red; */
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+.accept :hover {
+  /* color: green; */
+  transform: scale(1.1);
+  transition: 0.2s;
+}
