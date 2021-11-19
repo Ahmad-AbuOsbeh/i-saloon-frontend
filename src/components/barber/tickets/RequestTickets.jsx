@@ -161,12 +161,12 @@ export default function RequestTickets() {
                     }}
                     fontSize='small'
                   />
-                  <h5>{ticket.user_name}</h5>
-                  <h5>{ticket.service_name}</h5>
+                  <h5 className={styles.userName}>{ticket.user_name}</h5>
+                  <h5 className={styles.serviceName}>{ticket.service_name}</h5>
 
-                  <h5>{ticket.estimated_time} min</h5>
+                  <h5 className={styles.serTime}>{ticket.estimated_time} min</h5>
 
-                  <h5>{ticket.time}</h5>
+                  <h5 className={styles.serDate}>{ticket.time}</h5>
                   <span className={styles.accept}>
                     <CheckCircleOutlineIcon onClick={() => addToQueue(ticket)} />
                   </span>

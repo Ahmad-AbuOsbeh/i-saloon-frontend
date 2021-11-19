@@ -8,3 +8,28 @@
   transform: scale(1.1);
   transition: 0.2s;
 }
+.decline {
+  position: relative;
+  right: -1rem;
+}
+.accept {
+  position: relative;
+  right: -0.5rem;
+}
+
+.serviceName {
+  width: 5rem;
+}
+
+.userName {
+  width: 10rem;
+  padding-left: 0.5rem;
+}
+
+.serTime {
+  width: 3rem;
+}
+
+.serDate {
+  width: 7rem;
+}

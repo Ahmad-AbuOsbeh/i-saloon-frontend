@@ -10,6 +10,7 @@ import DeleteForever from '@material-ui/icons/DeleteForever';
 import UpdateProductModal from '../../products/UpdateProductModal';
 import { useParams } from 'react-router';
 import ProductModal from './util/ProductModal';
+import { storage } from '../../../../../firebase/firebase';
 
 function Products() {
   const dispatch = useDispatch();
@@ -47,6 +48,11 @@ function Products() {
   async function deleteProductHandler(product) {
     // '/products/:productID/:barberID'
     const response = await instance.delete(`/barber/products/${product.id}/${product.barber_id}`);
+    let pictureRef = storage.refFromURL(product.product_image);
+    pictureRef.delete().then(function () {
+      console.log('image deleted');
+    });
+
     fetchProducts(); // ehhh daaaahhh
   }
 
@@ -60,25 +66,77 @@ function Products() {
   };
 
   // on submmit update product form
-  async function onSubmitUpdate(e, product, productData) {
+  async function onSubmitUpdate(e, product, productData, setProductData) {
     try {
       e.preventDefault();
       // setProductData({ ...productData, barberID: 1 });
-      let formData = new FormData();
-      formData.append('productImg', productData.productImg ? productData.productImg : product.product_image);
+      let updatedProduct = {
+        productImg: productData.productImg ? productData.productImg : product.product_image,
+        productName: productData.productName ? productData.productName : product.product_name,
+        productPrice: productData.productPrice ? productData.productPrice : product.price,
+        productDescrp: productData.productDescrp ? productData.productDescrp : product.description,
+        discount: productData.discount ? productData.discount : product.discount,
+        endDate: productData.endDate ? productData.endDate : product.end_date,
+      };
+      if (productData.productImg) {
+        const file = productData.productImg;
+        const directory = 'products';
 
-      formData.append('barberID', 1);
-      formData.append('productName', productData.productName ? productData.productName : product.product_name);
-      formData.append('productPrice', productData.productPrice ? productData.productPrice : product.price);
-      formData.append('productDescrp', productData.productDescrp ? productData.productDescrp : product.description);
-      formData.append('discount', productData.discount ? productData.discount : product.discount);
-      formData.append('endDate', productData.endDate ? productData.endDate : product.end_date);
-      const response = await instance.put(`/barber/products/${product.id}/1`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      fetchProducts();
+        const name = new Date() + '-' + file.name;
+        const storageRef = storage.ref(`${directory}/${name}`);
 
-      handleClose();
+        storageRef.put(file).on(
+          'state_changed',
+          (snapshot) => {
+            //   Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+              default:
+            }
+          },
+          (error) => {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                //   User doesn't have permission to access the object
+                break;
+              case 'storage/canceled':
+                //   User canceled the upload
+                break;
+              case 'storage/unknown':
+                //   Unknown error occurred, inspect error.serverResponse
+                break;
+              default:
+            }
+          },
+          () => {
+            //   Upload completed successfully, now we can get the download URL
+            storageRef.getDownloadURL().then(async (downloadURL) => {
+              console.log('File available at', downloadURL);
+              updatedProduct.productImg = downloadURL;
+              const response = await instance.put(`/barber/products/${product.id}/1`, updatedProduct);
+              fetchProducts();
+              handleClose();
+              setProductData({});
+              let pictureRef = storage.refFromURL(product.product_image);
+              pictureRef.delete().then(function () {
+                console.log('image deleted');
+              });
+            });
+          }
+        );
+      } else {
+        const response = await instance.put(`/barber/products/${product.id}/1`, updatedProduct);
+        fetchProducts();
+        handleClose();
+        setProductData({});
+      }
     } catch (e) {
       console.log('update Product Error', e.message);
     }
@@ -106,7 +164,7 @@ function Products() {
 
       {role === 'barber' && userId === barberIds && isloggedIn && (
         <div className={styles.productButton}>
-          <AddProduct name="Product" />
+          <AddProduct name='Product' />
         </div>
       )}
 
@@ -115,15 +173,15 @@ function Products() {
           <div className={styles.card} key={pro.id}>
             <div className={styles.innerCard}>
               <div className={styles.image}>
-                <img src={`${url}${pro.product_image}`} alt={pro.product_name} />
+                <img src={`${pro.product_image}`} alt={pro.product_name} />
               </div>
 
               <div className={styles.hidden}>
-                <Button onClick={() => deleteProductHandler(pro)} style={{ color: '#a38350' }} size="small">
+                <Button onClick={() => deleteProductHandler(pro)} style={{ color: '#a38350' }} size='small'>
                   <DeleteForever className={styles.icon} />
                 </Button>
 
-                <Button onClick={() => handleOpen(pro)} style={{ color: '#a38350' }} size="small">
+                <Button onClick={() => handleOpen(pro)} style={{ color: '#a38350' }} size='small'>
                   <Edit className={styles.icon} />
                 </Button>
 
@@ -131,7 +189,7 @@ function Products() {
                   <AddShoppingCart className={styles.icon} />
                 </Button> */}
 
-                <Button onClick={() => handleModalOpen(pro)} style={{ color: '#a38350' }} size="small">
+                <Button onClick={() => handleModalOpen(pro)} style={{ color: '#a38350' }} size='small'>
                   <VisibilityOffSharp className={styles.icon} />
                 </Button>
               </div>
@@ -147,14 +205,7 @@ function Products() {
             </div>
           </div>
         ))}
-        {showUpdateForm && (
-          <UpdateProductModal
-            showUpdateForm={showUpdateForm}
-            handleClose={handleClose}
-            onSubmitUpdate={onSubmitUpdate}
-            pro={product}
-          />
-        )}
+        {showUpdateForm && <UpdateProductModal showUpdateForm={showUpdateForm} handleClose={handleClose} onSubmitUpdate={onSubmitUpdate} pro={product} />}
       </div>
     </div>
   );
