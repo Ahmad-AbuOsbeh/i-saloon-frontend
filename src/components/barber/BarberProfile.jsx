@@ -57,17 +57,9 @@ function BarberProfile() {
     <div>
       <Card setUser={setUser} barberId={id} info={user} changePick={changePick} active={tab} />
 
-      {/* <Queues /> */}
+      <Queues />
 
-      {tab === 'services' ? (
-        <Services barberId={id} />
-      ) : tab === 'products' ? (
-        <Products />
-      ) : tab === 'reviews' ? (
-        <Reviews />
-      ) : (
-        <Subscribers role={role} />
-      )}
+      {tab === 'services' ? <Services barberId={id} /> : tab === 'products' ? <Products /> : tab === 'reviews' ? <Reviews /> : <Subscribers role={role} />}
 
       <Media />
     </div>

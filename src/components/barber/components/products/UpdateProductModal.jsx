@@ -71,7 +71,7 @@ export default function UpdateProductModal({ showUpdateForm, handleClose, onSubm
         <Fade in={showUpdateForm}>
           <div className={classes.paper}>
             <CloseIcon className={classes.closeIcon} onClick={handleClose} />
-            <form className={classes.root} onSubmit={(e) => onSubmitUpdate(e, pro, productData)} noValidate autoComplete='off'>
+            <form className={classes.root} onSubmit={(e) => onSubmitUpdate(e, pro, productData, setProductData)} noValidate autoComplete='off'>
               <h2 id='transition-modal-title'>Update Product</h2>
 
               <div>

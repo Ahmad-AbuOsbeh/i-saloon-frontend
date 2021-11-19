@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import instance from '../../../../API/axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductsAction } from '../../../../store/actions';
-
+import { storage } from '../../../../firebase/firebase';
 const useStyles = makeStyles((theme) => ({
   root: {
     float: 'left',
@@ -56,23 +56,58 @@ export default function CreateProductModal({ showModal, handleClose, handleOpen 
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
-      // setProductData({ ...productData, barberID: 1 });
-      let formData = new FormData();
-      formData.append('productImg', productData.productImg);
-      formData.append('barberID', productData.barberID);
-      formData.append('productName', productData.productName);
-      formData.append('productPrice', productData.productPrice);
-      formData.append('productDescrp', productData.productDescrp);
-      formData.append('discount', productData.discount);
-      formData.append('endDate', productData.endDate);
+      console.log('productData.productImg', productData.productImg);
+      if (productData.productImg) {
+        const file = productData.productImg;
+        const directory = 'products';
 
-      const response = await instance.post('/barber/products', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      console.log(response);
-      const products = await instance.get(`/barber/products/0/${id}`);
-      dispatch(getProductsAction(products.data));
-      handleClose();
+        const name = new Date() + '-' + file.name;
+        const storageRef = storage.ref(`${directory}/${name}`);
+
+        storageRef.put(file).on(
+          'state_changed',
+          (snapshot) => {
+            //   Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+              default:
+            }
+          },
+          (error) => {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                //   User doesn't have permission to access the object
+                break;
+              case 'storage/canceled':
+                //   User canceled the upload
+                break;
+              case 'storage/unknown':
+                //   Unknown error occurred, inspect error.serverResponse
+                break;
+              default:
+            }
+          },
+          () => {
+            //   Upload completed successfully, now we can get the download URL
+            storageRef.getDownloadURL().then(async (downloadURL) => {
+              console.log('File available at', downloadURL);
+              productData.productImg = downloadURL;
+              const response = await instance.post('/barber/products', productData);
+              const products = await instance.get(`/barber/products/0/${id}`);
+              dispatch(getProductsAction(products.data));
+              handleClose();
+              setProductData({ barberID: id });
+            });
+          }
+        );
+      }
     } catch (e) {
       console.log('ADD Product Error', e.message);
     }
@@ -106,6 +141,7 @@ export default function CreateProductModal({ showModal, handleClose, handleOpen 
             <form className={classes.root} onSubmit={submitHandler} noValidate autoComplete='off'>
               <h2 id='transition-modal-title'>Add Product</h2>
 
+              {/* <button onClick={() => uploadImage('products', img)}>firebase</button> */}
               <div>
                 <TextField id='standard-error' onChange={(e) => handleChange(e)} label='productName' name='productName' defaultValue={''} variant='outlined' />
                 <TextField onChange={(e) => handleChange(e)} id='standard-error-helper-text' label='productDescrp' name='productDescrp' defaultValue={''} variant='outlined' />
