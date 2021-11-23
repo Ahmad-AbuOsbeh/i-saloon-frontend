@@ -5,9 +5,10 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import instance from '../../API/axios';
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
-
+import styles from './queue.module.css';
 export default function Queues() {
   let queueState = useSelector((state) => state?.queueReducer?.acceptedTicket);
+  const role = useSelector((state) => state?.authReducer?.role);
 
   const startWorkingHour = 8;
   const endWorkingHour = 17;
@@ -21,29 +22,26 @@ export default function Queues() {
   let check = new Date();
   let activeHour = check.getHours();
   const date = check.getFullYear() + '-' + Number(check.getMonth() + 1) + '-' + check.getDate();
-  console.log('dateeee', date);
   const { id } = useParams();
 
   // fetch queues
   async function fetchQueues() {
     const response = await instance.get(`/barber/queue/get/${id}/0/0`);
-    console.log('im response from queue', response.data);
     setAllQueues(response.data);
   }
 
   // delete queue
   async function deleteQueueHandler(queueId) {
     const response = await instance.delete(`/barber/queue/delete/${queueId}/0/0`);
-    console.log('deleted queue', response.data);
     fetchQueues();
   }
 
   useEffect(() => {
     let array = [];
     for (let i = 0; i < AllQueues.length; i++) {
-      if (AllQueues[i].time.split(' ')[1] === date) {
-        array.push(AllQueues[i]);
-      }
+      // if (AllQueues[i].time.split(' ')[1] === date) {
+      array.push(AllQueues[i]);
+      // }
 
       setTodaysQueue(array);
     }
@@ -83,20 +81,20 @@ export default function Queues() {
                   height: '100%',
                   position: 'absolute',
                   left: `${startPercentage}%`,
-                  backgroundColor: '#FFC107',
+                  backgroundColor: '#8E0505',
                   boxSizing: 'border-box',
                   border: 'solid 5px white',
                   display: 'inline-block',
                 }}
               >
-                <DeleteForeverIcon style={{ position: 'absolute', right: '0', cursor: 'pointer' }} onClick={() => deleteQueueHandler(item.id)} />
+                {role === 'barber' && <DeleteForeverIcon style={{ position: 'absolute', right: '0', cursor: 'pointer' }} onClick={() => deleteQueueHandler(item.id)} />}
 
-                {activeHour > hour ? (
+                {/* {activeHour > hour ? (
                   //   <p style={{ writingMode: 'vertical-lr', textOrientation: 'upright  ', position: 'absolute', top: '2rem' }}>completed</p>
                   <DoneAllIcon style={{ marginBottom: '-120px', marginLeft: '1rem' }} />
                 ) : null}
 
-                {activeHour == hour ? <CircularProgress style={{ marginBottom: '-8rem', marginLeft: '20%' }} /> : null}
+                {activeHour == hour ? <CircularProgress style={{ marginBottom: '-8rem', marginLeft: '20%' }} /> : null} */}
               </div>
             ),
             text: (
@@ -139,21 +137,21 @@ export default function Queues() {
 
   // for styling
   const style = {
-    queuecontainer: {
-      backgroundColor: '#99154E',
-      boxSizing: 'border-box',
-      border: '#a38350 solid 1px ',
-      width: `75rem`,
-      height: '15rem',
-      margin: 'auto',
-      position: 'relative',
-    },
+    // queuecontainer: {
+    //   backgroundColor: '#99154E',
+    //   boxSizing: 'border-box',
+    //   border: '#a38350 solid 1px ',
+    //   width: `75rem`,
+    //   height: '15rem',
+    //   margin: 'auto',
+    //   position: 'relative',
+    // },
     timeLineContainer: {
       //   backgroundColor: 'black',
       boxSizing: 'border-box',
 
       //   border: '#a38350 solid 1px',
-      width: `75rem`,
+      width: `63.5rem`,
       height: '2rem',
       margin: 'auto',
       position: 'relative',
@@ -161,19 +159,21 @@ export default function Queues() {
     },
   };
   return (
-    <>
-      <p style={{ color: 'whitesmoke' }}>{date}</p>
+    <div className={styles.queue}>
+      <p className={styles.date}>
+        Booked Tickets on: <span className={styles.text}>{date}</span>
+      </p>
       <div className={style.bigContainer}>
         <div style={style.timeLineContainer}>
           {/* <hr style={{ color: 'red' }} /> */}
-          <p style={{ float: 'left', position: 'absolute', top: '-1rem', color: 'white' }}>{startWorkingHour}:00</p>
+          <p style={{ float: 'left', position: 'absolute', top: '-1rem', color: '#8E0505', fontWeight: 'bolder' }}>{startWorkingHour}:00</p>
           {renderedDivs?.map((item) => {
             return <>{item.text}</>;
           })}
-          <p style={{ float: 'right', marginTop: '0rem', color: 'white' }}>{endWorkingHour}:00</p>
+          <p style={{ float: 'right', marginTop: '0rem', color: '#8E0505', fontWeight: 'bolder' }}>{endWorkingHour}:00</p>
         </div>
-        <div style={style.queuecontainer}>{renderedDivs?.map((item) => item.div)}</div>
+        <div className={styles.queuecontainer}>{renderedDivs?.map((item) => item.div)}</div>
       </div>
-    </>
+    </div>
   );
 }

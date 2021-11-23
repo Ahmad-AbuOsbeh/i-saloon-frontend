@@ -12,15 +12,12 @@ import { ExpandMore, ExpandLess, DeleteForeverOutlined, EditOutlined } from '@ma
 function Reviews() {
   const { id } = useParams();
   const [reviews, setReviews] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const barberId = id;
 
   let role = useSelector((state) => state?.authReducer?.role);
-  // console.log('roleee', role);
   const user_id = useSelector((state) => state?.authReducer?.user?.id);
   let clientId;
   role === 'client' ? (clientId = user_id) : (clientId = 0);
-  // console.log('client id', clientId);
 
   useEffect(() => {
     fetchReviews();
@@ -29,7 +26,6 @@ function Reviews() {
   // fetch Reviews
   async function fetchReviews() {
     let response = await instance.get(`client/reviews/${barberId}`);
-    console.log('response.data', barberId, response.data);
     setReviews(response.data);
   }
 
@@ -50,11 +46,9 @@ function Reviews() {
               <span className={css.icon1}>
                 <EditOutlined />
               </span>
-              <span className={css.icon2}>
-                <DeleteForeverOutlined onClick={() => deleteReview(rev.id)} />
-              </span>
+              <span className={css.icon2}>{role === 'client' ? <DeleteForeverOutlined onClick={() => deleteReview(rev.id)} /> : <span style={{ color: '#1f2024' }}>bar</span>}</span>
             </div>
-            <img src={`${url}${rev.profile_pic}`} alt='' />
+            <img src={`${rev.profile_pic}`} alt='' />
             <div className={css.info}>
               <h3>{rev.user_name ? rev.user_name : 'Anonymous'} </h3>
               <span>{rev.city} </span>
@@ -70,10 +64,10 @@ function Reviews() {
           </div>
 
           <div className={css.bottom}>
-            <span className={css.date}> reviewed on : {rev.date.substring(0, 10)}</span>
+            <span className={css.date}> reviewed on : {rev.date.substring(0, 9) + (Number(rev.date.substring(9, 10)) + 1)}</span>
 
             {rev.user_name && (
-              <Link to={`/my-profile/${rev.id}`}>
+              <Link to={`/my-profile/${rev.client_id}`}>
                 <div>
                   <Button variant='outlined' style={{ color: '#a38350' }} size='small'>
                     <span> view profile </span> <AccountCircleOutlinedIcon />

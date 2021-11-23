@@ -29,8 +29,6 @@ function Products() {
   async function fetchProducts() {
     const response = await instance.get(`/barber/products/0/${id}`);
 
-    console.log(response.data, 'api test');
-
     dispatch(getProductsAction(response.data));
     setBarberProducts(state.barberProducts);
   }
@@ -49,9 +47,7 @@ function Products() {
     // '/products/:productID/:barberID'
     const response = await instance.delete(`/barber/products/${product.id}/${product.barber_id}`);
     let pictureRef = storage.refFromURL(product.product_image);
-    pictureRef.delete().then(function () {
-      console.log('image deleted');
-    });
+    pictureRef.delete().then(function () {});
 
     fetchProducts(); // ehhh daaaahhh
   }
@@ -81,8 +77,9 @@ function Products() {
       if (productData.productImg) {
         const file = productData.productImg;
         const directory = 'products';
-
-        const name = new Date() + '-' + file.name;
+        const currentdate = new Date();
+        const datetime = currentdate.getDate() + '-' + (currentdate.getMonth() + 1) + '-' + currentdate.getFullYear() + '@' + currentdate.getHours() + ':' + currentdate.getMinutes();
+        const name = datetime + ' - ' + file.name;
         const storageRef = storage.ref(`${directory}/${name}`);
 
         storageRef.put(file).on(
@@ -177,14 +174,16 @@ function Products() {
               </div>
 
               <div className={styles.hidden}>
-                <Button onClick={() => deleteProductHandler(pro)} style={{ color: '#a38350' }} size='small'>
-                  <DeleteForever className={styles.icon} />
-                </Button>
-
-                <Button onClick={() => handleOpen(pro)} style={{ color: '#a38350' }} size='small'>
-                  <Edit className={styles.icon} />
-                </Button>
-
+                {role === 'barber' && (
+                  <>
+                    <Button onClick={() => deleteProductHandler(pro)} style={{ color: '#a38350' }} size='small'>
+                      <DeleteForever className={styles.icon} />
+                    </Button>
+                    <Button onClick={() => handleOpen(pro)} style={{ color: '#a38350' }} size='small'>
+                      <Edit className={styles.icon} />
+                    </Button>
+                  </>
+                )}
                 {/* <Button onClick={() => addToCart(pro.id)} style={{ color: '#a38350' }} size="small">
                   <AddShoppingCart className={styles.icon} />
                 </Button> */}

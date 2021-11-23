@@ -27,8 +27,8 @@ function ProductModal({ prod, open, handleClose }) {
   return (
     <div className={css.container}>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         className={classes.modal}
         open={open}
         onClose={handleClose}
@@ -45,10 +45,10 @@ function ProductModal({ prod, open, handleClose }) {
                 <div className={css.photoContainer}>
                   <div className={css.photoMain}>
                     <div className={css.controls}>
-                      <i className={css.materialIcons}>share</i>
-                      <i className={css.materialIcons}>favorite_border</i>
+                      {/* <i className={css.materialIcons}>share</i>
+                      <i className={css.materialIcons}>favorite</i> */}
                     </div>
-                    <img src={`${url}${prod.product_image}`} alt={prod.product_name} />
+                    <img src={`${prod.product_image}`} alt={prod.product_name} />
                   </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@ function ProductModal({ prod, open, handleClose }) {
                   <h3>Description</h3>
                   <p>{prod.description}</p>
                 </div>
-                <div className={css.buyBtn}>
+                <div className={css.buyBtn} onClick={() => handleClose()}>
                   <AddShoppingCartIcon /> Add to Cart
                 </div>
               </div>

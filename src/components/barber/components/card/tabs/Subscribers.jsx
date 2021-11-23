@@ -2,15 +2,16 @@ import { React, useEffect, useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import { PersonAddDisabledOutlined, PersonAddOutlined, PersonOutline } from '@material-ui/icons';
 import css from '../../../styles/subscriber.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import instance, { url } from '../../../../../API/axios';
 
 function Subscribers({ role }) {
   const [subscribers, setSubscribers] = useState([]);
+  let { id } = useParams();
 
   //fetch Subscribers
   async function fetchSubscribers() {
-    const response = await instance.get(`/barber/subs/1/0`);
+    const response = await instance.get(`/barber/subs/${id}/0`);
     setSubscribers(response.data.rows);
   }
   useEffect(() => {

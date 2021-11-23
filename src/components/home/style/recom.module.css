@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 .rateContainer {
@@ -6,30 +6,28 @@
   margin: auto;
   overflow: hidden;
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
   flex-direction: row;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
 
 .topRatedH {
   margin-top: 50px;
   margin-bottom: 2rem;
   text-align: center;
-  font-family: "Ma Shan Zheng", cursive;
+  font-family: 'Ma Shan Zheng', cursive;
   font-size: 3rem;
   color: #a38350;
 }
 
-
 .wrapper,
 .wrapper .imgArea,
 .socialIcons a,
-.buttons button{
+.buttons button {
   background: #1f2024;
-  box-shadow: inset -3px -3px 7px #1b1c1f,
-              inset 3px 3px 5px #232429;
+  box-shadow: inset -3px -3px 7px #1b1c1f, inset 3px 3px 5px #232429;
 }
-.wrapper{
+.wrapper {
   border: solid #a38350 0.1em;
   width: 275px;
   margin-top: 1rem;
@@ -39,9 +37,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  
 }
-.wrapper .icon{
+.wrapper .icon {
   font-size: 17px;
   color: #a38350;
   position: absolute;
@@ -55,51 +52,51 @@
   border-radius: 50%;
   font-size: 16px;
 }
-.wrapper .icon i{
+.wrapper .icon i {
   position: relative;
   z-index: 9;
 }
-.wrapper .icon.arrow{
+.wrapper .icon.arrow {
   left: 15px;
 }
-.wrapper .icon.dots{
+.wrapper .icon.dots {
   right: 15px;
 }
-.wrapper .imgArea{
+.wrapper .imgArea {
   height: 150px;
   width: 150px;
-  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50% ;
-  
+  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.imgArea .innerArea{
+.imgArea .innerArea {
   height: calc(100% - 25px);
   width: calc(100% - 25px);
-  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50% ;
+  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50%;
 }
-.innerArea img{
+.innerArea img {
   height: 100%;
   width: 100%;
-  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50% ;
+  border-radius: 48% 52% 10% 90% / 50% 60% 40% 50%;
   object-fit: cover;
 }
-.wrapper .name{
+.wrapper .name {
   font-size: 18px;
   font-weight: 500;
   color: #f1f1f1;
   margin: 10px 0 5px 0;
 }
-.wrapper .about{
+.wrapper .about {
   color: #f1f1f1;
   font-weight: 400;
   font-size: 16px;
 }
-.wrapper .socialIcons{
+.wrapper .socialIcons {
   margin: 15px 0 25px 0;
 }
-.socialIcons a{
+.socialIcons a {
   position: relative;
   height: 40px;
   width: 40px;
@@ -110,8 +107,8 @@
 }
 .socialIcons a:hover::before,
 .wrapper .icon:hover::before,
-.buttons button:hover:before{
-  content: "";
+.buttons button:hover:before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -119,14 +116,13 @@
   right: 0;
   border-radius: 50%;
   background: #1f2024;
-  box-shadow: inset 6px 6px 12px #16171a,
-  inset -6px -6px 12px #28292e;
+  box-shadow: inset 6px 6px 12px #16171a, inset -6px -6px 12px #28292e;
 }
-.buttons button:hover:before{
+.buttons button:hover:before {
   z-index: -1;
   border-radius: 5px;
 }
-.socialIcons a i{
+.socialIcons a i {
   position: relative;
   z-index: 3;
   text-align: center;
@@ -134,24 +130,24 @@
   height: 100%;
   line-height: 40px;
 }
-.socialIcons a.fb i{
-  color: #4267B2;
+.socialIcons a.fb i {
+  color: #4267b2;
 }
-.socialIcons a.twitter i{
-  color: #1DA1F2;
+.socialIcons a.twitter i {
+  color: #1da1f2;
 }
-.socialIcons a.insta i{
-  color: #E1306C;
+.socialIcons a.insta i {
+  color: #e1306c;
 }
-.socialIcons a.yt i{
+.socialIcons a.yt i {
   color: #ff0000;
 }
-.wrapper .buttons{
+.wrapper .buttons {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.buttons button{
+.buttons button {
   position: relative;
   width: 100%;
   border: none;
@@ -164,37 +160,37 @@
   cursor: pointer;
   z-index: 4;
 }
-.buttons button:first-child{
+.buttons button:first-child {
   margin-right: 10px;
 }
-.buttons button:last-child{
+.buttons button:last-child {
   margin-left: 10px;
 }
-.wrapper .social-share{
+.wrapper .social-share {
   display: flex;
   width: 100%;
   margin-top: 30px;
   padding: 0 5px;
   justify-content: space-between;
 }
-.social-share .row{
+.social-share .row {
   color: #f1f1f1;
   font-size: 17px;
   cursor: pointer;
   position: relative;
 }
-.social-share .row::before{
+.social-share .row::before {
   position: absolute;
-  content: "";
+  content: '';
   height: 100%;
   width: 2px;
   background: #1f2024;
   margin-left: -25px;
 }
-.row:first-child::before{
+.row:first-child::before {
   background: none;
 }
-.social-share .row i.icon-2{
+.social-share .row i.icon-2 {
   position: absolute;
   left: 0;
   top: 50%;
@@ -205,7 +201,7 @@
   transition: all 0.3s ease;
 }
 .row:nth-child(1):hover i.fa-heart,
-.row:nth-child(2):hover i.fa-comment{
+.row:nth-child(2):hover i.fa-comment {
   opacity: 1;
   pointer-events: auto;
 }

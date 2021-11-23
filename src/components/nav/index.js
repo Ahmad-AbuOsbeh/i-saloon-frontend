@@ -6,15 +6,18 @@ import RequestTickets from '../barber/tickets/RequestTickets';
 import { Redirect, useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { logOut } from '../../store/actions';
+import cookie from 'react-cookies';
 function NavBar() {
   const role = useSelector((state) => state?.authReducer?.role);
   const userId = useSelector((state) => state?.authReducer?.user?.id);
   const isLoggedIn = useSelector((state) => state?.authReducer?.isLoggedIn);
   let history = useHistory();
   const dispatch = useDispatch();
+
   function logout() {
     //empty the state of redux
     dispatch(logOut());
+    cookie.remove('user');
     //redirect to home page
     history.push('/');
   }
