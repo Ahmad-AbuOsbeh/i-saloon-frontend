@@ -44,7 +44,7 @@ function BookedServices() {
 
       {bookedServices.length &&
         bookedServices?.map((ser) => (
-          <div className={styles.container}>
+          <div className={styles.container} key={ser.service_name}>
             <div className={!prop.includes(ser.service_name) ? styles.wrapper : styles.wrapper2}>
               <img src={ser.profile_pic} alt='' />
               <p>{ser.service_name}</p>

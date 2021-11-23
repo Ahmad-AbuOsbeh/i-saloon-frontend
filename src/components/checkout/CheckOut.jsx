@@ -144,7 +144,7 @@ function CheckOut() {
           </div>
           {cart.length > 0 &&
             cart.map((ser) => (
-              <div className={css.selectedService}>
+              <div key={ser.service_name} className={css.selectedService}>
                 <div>
                   <span>{ser.service_name}</span>
                   <span>{ser.estimated_time} min</span>

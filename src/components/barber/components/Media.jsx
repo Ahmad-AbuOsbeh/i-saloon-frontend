@@ -21,7 +21,7 @@ function Media() {
       <h1>Gallary</h1>
       <div className={css.gridCcontainer}>
         {data.map((item, idx) => (
-          <div>
+          <div key={item}>
             <img className={`grid-item grid-item-${idx + 1}`} src={item} alt='' />
           </div>
         ))}
