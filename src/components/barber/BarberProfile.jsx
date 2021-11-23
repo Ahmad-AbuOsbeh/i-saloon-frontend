@@ -10,6 +10,7 @@ import ServiceButton from './components/services/ServiceButton';
 import { BrowserRouter as Router, Switch, Route, useParams } from 'react-router-dom';
 import instance from '../../API/axios';
 
+
 function BarberProfile() {
   let { id } = useParams();
   if (id === '1') {
@@ -19,20 +20,6 @@ function BarberProfile() {
   const [tab, setTab] = useState('services');
   const [user, setUser] = useState({});
   const role = 'barber';
-
-  // "id": 6,
-  // "name": "Ahmad Omar",
-  // "city": "Amman",
-  // "address": "Jubeiha",
-  // "gender": "male",
-  // "age": 18,
-  // "shop_gender": "men",
-  // "shop_name": "ramahi saloon",
-  // "phone_num": "0798254625",
-  // "profile_pic": "/images/profilePics/male.jpg",
-  // "working_hours": "08:30 AM - 5:00 PM",
-  // "holidays": "",
-  // "state": "open"
 
   // fetch barber
   async function fetchBarber() {
@@ -57,9 +44,9 @@ function BarberProfile() {
     <div>
       <Card setUser={setUser} barberId={id} info={user} changePick={changePick} active={tab} />
 
-      <Queues />
+      {/* <Queues /> */}
 
-      {tab === 'services' ? <Services barberId={id} /> : tab === 'products' ? <Products /> : tab === 'reviews' ? <Reviews /> : <Subscribers role={role} />}
+      {tab === 'queues' ? <Queues /> : tab === 'services' ? <Services barberId={id} /> : tab === 'products' ? <Products /> : tab === 'reviews' ? <Reviews /> : <Subscribers role={role} />}
 
       <Media />
     </div>

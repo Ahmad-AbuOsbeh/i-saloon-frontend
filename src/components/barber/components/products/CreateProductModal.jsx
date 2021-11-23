@@ -60,8 +60,9 @@ export default function CreateProductModal({ showModal, handleClose, handleOpen 
       if (productData.productImg) {
         const file = productData.productImg;
         const directory = 'products';
-
-        const name = new Date() + '-' + file.name;
+        const currentdate = new Date();
+        const datetime = currentdate.getDate() + '-' + (currentdate.getMonth() + 1) + '-' + currentdate.getFullYear() + '@' + currentdate.getHours() + ':' + currentdate.getMinutes();
+        const name = datetime + ' - ' + file.name;
         const storageRef = storage.ref(`${directory}/${name}`);
 
         storageRef.put(file).on(

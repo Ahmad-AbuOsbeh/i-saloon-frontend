@@ -17,8 +17,13 @@ const authReducer = (state = initialState, action) => {
         role: role,
       };
     case 'LOG_OUT':
-      console.log("logged out");
-      return state;
+      console.log('logged out');
+      const initialState = {
+        role: '',
+        isLoggedIn: false,
+        user: null,
+      };
+      return initialState;
     default:
       return state;
   }

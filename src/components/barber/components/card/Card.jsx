@@ -3,42 +3,45 @@ import { Grade, MenuBookOutlined, SubscriptionsOutlined, LocalGroceryStoreOutlin
 import styles from '../../styles/card.module.css';
 import AccountSettings from '../../../ClientProfile/AccountSettings';
 import instance, { url } from '../../../../API/axios';
-
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { FcOvertime } from 'react-icons/fc';
+
 function Card({ info, changePick, active, setUser, barberId }) {
   const role = useSelector((state) => state?.authReducer?.role);
   const isloggedIn = useSelector((state) => state?.authReducer?.isLoggedIn);
   const userId = useSelector((state) => state?.authReducer?.user?.id);
   let clientId = userId;
   const barberIds = Number(barberId);
+  let { id } = useParams();
 
   const [showModal, setShowModal] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const [clientSubscriptions, setClientSubscriptions] = useState([]);
-
-  // const id = useSelector((state) => state?.authReducer?.user?.id);
-  // let clientId;
-  // role === 'client' ? (clientId = id) : (clientId = 0);
-  // console.log('client id', clientId);
+  const [barberSubscribers, setbarberSubscribers] = useState([]);
+  const [rating, setrating] = useState(0);
 
   // fetch client subscriptions
   async function fetchClientSubscriptions() {
     let clientSubs = [];
     const response = await instance.get(`/barber/subs/0/${clientId}`);
-    console.log('response.data subs', response.data);
     response.data.rows.map((sub) => clientSubs.push(sub.barber_id));
     setClientSubscriptions(clientSubs);
-    console.log('clientSubscriptions.includes(barberId)', clientSubs.includes(Number(barberId)), clientSubs);
   }
-
+  //fetch Subscribers
+  async function fetchSubscribers() {
+    const response = await instance.get(`/barber/subs/${id}/0`);
+    setbarberSubscribers(response.data.rows);
+  }
   // did mount
   useEffect(() => {
     fetchClientSubscriptions();
+    fetchSubscribers();
+    //info?.rating ? info.rating : randomNumbers('rating')
+    setrating(randomNumbers('rating'));
   }, []);
 
   // subscribe handler
   async function subscribeHandler(barberId) {
-    console.log(' userId, barberId ', clientId, barberId);
     const response = await instance.post(`/client/subs`, { clientId, barberId });
     fetchClientSubscriptions();
   }
@@ -58,7 +61,7 @@ function Card({ info, changePick, active, setUser, barberId }) {
   };
 
   function randomNumbers(type) {
-    if (type === 'rating') return Math.random().toFixed(1) * 5;
+    if (type === 'rating') return (Math.random() * 5).toFixed(2);
 
     if (type === 'subscribers') return Math.round(Math.random() * 1000);
   }
@@ -78,27 +81,31 @@ function Card({ info, changePick, active, setUser, barberId }) {
                 </div>
               )}
               <div className={`${styles.col2} ${styles.first}`}>
-                <img src={url + info.profile_pic} alt='' />
+                <img src={info.profile_pic} alt='' />
                 <h1 style={{ color: '#f2f2f2' }}>{`${info.user_name}`}</h1>
 
-                {clientSubscriptions.includes(Number(barberId)) ? (
-                  <span
-                    style={{ display: visibility }}
-                    onClick={() => {
-                      unSubscribeHandler(info.id);
-                    }}
-                  >
-                    UnSubscribe
-                  </span>
-                ) : (
-                  <span
-                    style={{ display: visibility }}
-                    onClick={() => {
-                      subscribeHandler(info.id);
-                    }}
-                  >
-                    Subscribe
-                  </span>
+                {role === 'client' && (
+                  <>
+                    {clientSubscriptions.includes(Number(barberId)) ? (
+                      <span
+                        style={{ display: visibility }}
+                        onClick={() => {
+                          unSubscribeHandler(info.id);
+                        }}
+                      >
+                        UnSubscribe
+                      </span>
+                    ) : (
+                      <span
+                        style={{ display: visibility }}
+                        onClick={() => {
+                          subscribeHandler(info.id);
+                        }}
+                      >
+                        Subscribe
+                      </span>
+                    )}
+                  </>
                 )}
                 <div className={styles.infoData}>
                   <h3>
@@ -120,12 +127,12 @@ function Card({ info, changePick, active, setUser, barberId }) {
                 <div className={`${styles.grid} ${styles.clearfix}`}>
                   <div className={`${styles.col3} ${styles.first}`}>
                     <h1>
-                      {info?.rating ? info.rating : randomNumbers('rating')} &nbsp; <Grade className={`${styles.star}`} style={{ fontSize: 31 }} />
+                      {rating} &nbsp; <Grade className={`${styles.star}`} style={{ fontSize: 31 }} />
                     </h1>
                     <span>Rating</span>
                   </div>
                   <div className={`${styles.col3}`}>
-                    <h1>{info?.subscribers?.length ? info.subscribers.length : randomNumbers('subscribers')}</h1>
+                    <h1>{barberSubscribers.length ? barberSubscribers.length : randomNumbers('subscribers')}</h1>
                     <span>Subscribers</span>
                   </div>
                   <div className={`${styles.col3} ${styles.last}`}>
@@ -138,6 +145,15 @@ function Card({ info, changePick, active, setUser, barberId }) {
 
             <div className={`${styles.row} ${styles.clearfix}`}>
               <ul className={`${styles.row2tab} ${styles.clearfix}`}>
+                <li onClick={changePick} id='queues' className={active === 'queues' ? styles.pick : ''}>
+                  <div className={styles.icon}>
+                    <FcOvertime onClick={changePick} id='queues' style={{ fontSize: 25 }} />
+                    <span onClick={changePick} id='queues' style={{ marginLeft: '10px' }}>
+                      Queues
+                    </span>
+                  </div>
+                </li>
+
                 <li onClick={changePick} id='services' className={active === 'services' ? styles.pick : ''}>
                   <div className={styles.icon}>
                     <MenuBookOutlined onClick={changePick} id='services' style={{ fontSize: 25 }} />{' '}

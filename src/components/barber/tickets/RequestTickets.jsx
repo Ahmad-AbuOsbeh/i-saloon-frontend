@@ -62,9 +62,7 @@ export default function RequestTickets() {
 
   // fetch tickets
   async function fetchTickets() {
-    console.log('barberId', barberId);
     const response = await instance.get(`/barber/requests/${barberId}`);
-    console.log('responsessssssssss all tickets', response.data);
     setAllTickets(response.data);
   }
   // did mount

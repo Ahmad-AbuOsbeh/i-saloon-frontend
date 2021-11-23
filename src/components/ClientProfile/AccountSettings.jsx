@@ -2,9 +2,9 @@
 // import './style/PersonalInformation.css';
 import { React, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import{Modal,Backdrop,Fade,Select,MenuItem,InputLabel,FormControl,TextField,Button} from '@material-ui/core';
-import {Close,Save} from '@material-ui/icons';
-import instance,{url} from '../../API/axios';
+import { Modal, Backdrop, Fade, Select, MenuItem, InputLabel, FormControl, TextField, Button } from '@material-ui/core';
+import { Close, Save } from '@material-ui/icons';
+import instance, { url } from '../../API/axios';
 import { If, Then } from 'react-if';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-export default function AccountSettings({ showModal, handleClose,fields, setUser,user, userType }) {
+export default function AccountSettings({ showModal, handleClose, fields, setUser, user, userType }) {
   const classes = useStyles();
   const [userInformation, setUserInformation] = useState(user);
   const cities = ['Amman', 'Irbid', 'Az Zarqa', 'Al Aqabah', 'As Salt', 'Jarash', 'Al Mafraq', 'Maan', 'Al Karak', 'At Tafilah', 'Ajlun', 'Madaba'];
-  
+
   const convertToTwelve = (start, end) => {
     let startTime = start.split(':');
     let endTime = end.split(':');
@@ -60,49 +60,44 @@ export default function AccountSettings({ showModal, handleClose,fields, setUser
     let endTime12 = endHour12 + ':' + endMin + ' ' + endAMPM;
     return `${startTime12} - ${endTime12}`;
   };
-  
-  const submitHandler = async(e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     //convert 24 hours to 12 hours
     // setProductData({ ...productData, barberID: 1 });
     let formData = new FormData();
-    
+
     fields.forEach((field) => {
-      field==='user_name'? formData.append('user_name',userInformation.firstName+' '+userInformation.lastName):formData.append(field,userInformation[field]);
+      field === 'user_name' ? formData.append('user_name', userInformation.firstName + ' ' + userInformation.lastName) : formData.append(field, userInformation[field]);
     });
-   
-    
-    if(userType === 'barber'){
-      const workingHours = convertToTwelve(userInformation.startingHour,userInformation.endingHour);
-      
-    formData.append('working_hours', workingHours.toString());
-    
-    const response = await instance.put(`barber/user/${user.id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });       
-    
-    setUser(response.data);
-  }
-    else{
-    const response = await instance.put(`client/user/${user.id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    setUser(response.data);
-    console.log(response.data);
-}
+
+    if (userType === 'barber') {
+      const workingHours = convertToTwelve(userInformation.startingHour, userInformation.endingHour);
+
+      formData.append('working_hours', workingHours.toString());
+
+      const response = await instance.put(`barber/user/${user.id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      setUser(response.data);
+    } else {
+      const response = await instance.put(`client/user/${user.id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setUser(response.data);
+    }
     handleClose();
   };
   useEffect(() => {
     setUserInformation(user);
-  },[]);
+  }, []);
   const handleChange = (e) => {
-    if(e.target.name==='profile_pic'){
+    if (e.target.name === 'profile_pic') {
       setUserInformation({ ...userInformation, [e.target.name]: e.target.files[0] });
-    }
-    else{
+    } else {
       setUserInformation({ ...userInformation, [e.target.name]: e.target.value });
     }
-  
   };
   return (
     <div>
@@ -128,10 +123,17 @@ export default function AccountSettings({ showModal, handleClose,fields, setUser
                   <p id='transition-modal-description'>edit your information</p>
                   <div>
                     <TextField id='standard-error' onChange={(e) => handleChange(e)} label='First Name' name='firstName' defaultValue={userInformation?.user_name?.split(' ')[0]} variant='outlined' />
-                    <TextField onChange={(e) => handleChange(e)} id='standard-error-helper-text' label='Last Name' name='lastName' defaultValue={userInformation?.user_name?.split(' ')[1]} variant='outlined' />
+                    <TextField
+                      onChange={(e) => handleChange(e)}
+                      id='standard-error-helper-text'
+                      label='Last Name'
+                      name='lastName'
+                      defaultValue={userInformation?.user_name?.split(' ')[1]}
+                      variant='outlined'
+                    />
                   </div>
                   <div>
-                    <TextField id='filled-error' type='password' onChange={(e) => handleChange(e)} label='Password'  name='password' variant='outlined' />
+                    <TextField id='filled-error' type='password' onChange={(e) => handleChange(e)} label='Password' name='password' variant='outlined' />
                     <TextField
                       className={classes.email}
                       onChange={(e) => handleChange(e)}
@@ -169,23 +171,8 @@ export default function AccountSettings({ showModal, handleClose,fields, setUser
                     </FormControl>
                   </div>
                   <div>
-                  <TextField
-                  onChange={(e) => handleChange(e)}
-                  id="outlined-error-helper-text"
-                  placeHolder="profile Image"
-                  name="profile_pic"
-                  type="file"
-                  defaultValue={''}
-                  variant="outlined"
-                />
-                    <TextField
-                      onChange={(e) => handleChange(e)}
-                      id='outlined-error-helper-text'
-                      label='Phone Number'
-                      name='phoneNumber'
-                      defaultValue={userInformation.phone_num}
-                      variant='outlined'
-                    />
+                    <TextField onChange={(e) => handleChange(e)} id='outlined-error-helper-text' placeHolder='profile Image' name='profile_pic' type='file' defaultValue={''} variant='outlined' />
+                    <TextField onChange={(e) => handleChange(e)} id='outlined-error-helper-text' label='Phone Number' name='phoneNumber' defaultValue={userInformation.phone_num} variant='outlined' />
                   </div>
                   <Button onClick={handleClose} variant='contained' size='large' className={classes.Closebutton} startIcon={<Close />}>
                     Close
@@ -202,10 +189,17 @@ export default function AccountSettings({ showModal, handleClose,fields, setUser
                 <p id='transition-modal-description'>edit your information</p>
                 <div>
                   <TextField onChange={(e) => handleChange(e)} name='firstName' id='standard-error' label='First Name' defaultValue={userInformation.name?.split(' ')[0]} variant='outlined' />
-                  <TextField onChange={(e) => handleChange(e)} id='standard-error-helper-text' label='Last Name' name='lastName' defaultValue={userInformation?.name?.split(' ')[1]} variant='outlined' />
+                  <TextField
+                    onChange={(e) => handleChange(e)}
+                    id='standard-error-helper-text'
+                    label='Last Name'
+                    name='lastName'
+                    defaultValue={userInformation?.name?.split(' ')[1]}
+                    variant='outlined'
+                  />
                 </div>
                 <div>
-                  <TextField type='password' onChange={(e) => handleChange(e)} id='filled-error' name='password' label='Password'  variant='outlined' />
+                  <TextField type='password' onChange={(e) => handleChange(e)} id='filled-error' name='password' label='Password' variant='outlined' />
                   <TextField
                     onChange={(e) => handleChange(e)}
                     className={classes.email}
@@ -237,15 +231,7 @@ export default function AccountSettings({ showModal, handleClose,fields, setUser
                   </FormControl>
                 </div>
                 <div>
-                <TextField
-                  onChange={(e) => handleChange(e)}
-                  id="outlined-error-helper-text"
-                  placeHolder="profile Image"
-                  name="profile_pic"
-                  type="file"
-                  defaultValue={''}
-                  variant="outlined"
-                />
+                  <TextField onChange={(e) => handleChange(e)} id='outlined-error-helper-text' placeHolder='profile Image' name='profile_pic' type='file' defaultValue={''} variant='outlined' />
                   <TextField onChange={(e) => handleChange(e)} id='outlined-error-helper-text' name='phoneNumber' label='Phone Number' defaultValue={userInformation.phone_num} variant='outlined' />
                 </div>
                 <div>

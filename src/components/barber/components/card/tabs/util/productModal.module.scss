@@ -10,7 +10,8 @@ $color-highlight: #ff3f40;
   margin: auto;
   min-width: 600px;
   background-color: #1f2024;
-  border-radius: 5px;
+  border-radius: 5px #1f2024;
+  border: #a38350 2px solid;
 }
 
 /* ----- Photo Section ----- */
@@ -120,6 +121,7 @@ $color-highlight: #ff3f40;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  margin-bottom: 0.5rem;
 
   &:active {
     transform: scale(0.97);

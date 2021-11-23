@@ -25,8 +25,12 @@ function Index() {
 
   return (
     <div className={styles.main}>
-      <SearchBar fetchBarbers={fetchBarbers} setAllBarbers={setAllBarbers} allBarbers={allBarbers} />
-      <AllBarbers allBarbers={allBarbers} />
+      <section className={styles.search}>
+        <SearchBar fetchBarbers={fetchBarbers} setAllBarbers={setAllBarbers} allBarbers={allBarbers} />
+      </section>
+      <section>
+        <AllBarbers allBarbers={allBarbers} />
+      </section>
     </div>
   );
 }

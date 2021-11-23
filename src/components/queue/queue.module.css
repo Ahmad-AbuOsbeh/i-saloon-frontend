@@ -1,0 +1,27 @@
+.queue {
+  margin-top: -3rem;
+}
+
+.queuecontainer {
+  background-color: #1f2024;
+  box-sizing: border-box;
+  border: white solid 1px;
+  width: 63.5rem;
+  height: 15rem;
+  margin: auto;
+  position: relative;
+  margin-bottom: 2rem;
+  box-shadow: 0 0px 5px 5px whitesmoke;
+}
+
+.date {
+  text-align: center;
+  /* width: fit-content; */
+  color: #a38350;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.date .text {
+  color: whitesmoke;
+}

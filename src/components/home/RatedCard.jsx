@@ -7,17 +7,14 @@ import { useSelector } from 'react-redux';
 function RatedCard({ barber, clientSubscriptions, fetchClientSubscriptions }) {
   const [isSubscribed, setIsSubscribed] = useState(false);
   let role = useSelector((state) => state?.authReducer?.role);
-  // console.log('roleee', role);
   const id = useSelector((state) => state?.authReducer?.user?.id);
   let clientId;
   role === 'client' ? (clientId = id) : (clientId = 0);
-  // console.log('client id', clientId);
 
   // subscribe handler
   async function subscribeHandler(barberId) {
     const response = await instance.post(`/client/subs`, { clientId, barberId });
     fetchClientSubscriptions();
-    console.log(response, 'sub');
     setIsSubscribed(true);
   }
 
@@ -25,24 +22,10 @@ function RatedCard({ barber, clientSubscriptions, fetchClientSubscriptions }) {
   async function unSubscribeHandler(barberId) {
     const response = await instance.delete(`/client/subs/${barberId}/${clientId}`);
     fetchClientSubscriptions();
-    console.log(response);
     setIsSubscribed(false);
   }
 
   return (
-    //   address: "حي الضباط"
-    // age: 29
-    // city: "al mafraq"
-    // gender: "male"
-    // holidays: "Friday"
-    // id: 1
-    // name: "hatem hatem"
-    // phone_num: "0789881099"
-    // profile_pic: "/images/profilePics/male.jpg"
-    // shop_gender: "male"
-    // shop_name: "Aragon Hair Styles"
-    // state: "open"
-    // working_hours: "10 am - 11 pm"
     <div className={styles.wrapper}>
       <div className={styles.imgArea}>
         <div className={styles.innerArea}>

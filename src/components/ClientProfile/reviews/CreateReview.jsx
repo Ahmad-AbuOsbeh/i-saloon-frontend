@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
-import instance from '../../../API/axios'
+import instance from '../../../API/axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { getServicesAction } from '../../../store/actions';
 import { Rating } from '@material-ui/lab';
@@ -45,16 +45,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-export default function CreateReview({ showModal, handleClose, review,fetch }) {
+export default function CreateReview({ showModal, handleClose, review, fetch }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.authReducer);
   const classes = useStyles();
-  const [serviceData, setserviceData] = useState({barberId: review.barber_id,clientId:review.client_id});
- 
+  const [serviceData, setserviceData] = useState({ barberId: review.barber_id, clientId: review.client_id });
+
   const submitHandler = async (e) => {
     try {
-     e.preventDefault();
-     console.log(serviceData);
+      e.preventDefault();
+      console.log(serviceData);
       await instance.post('/client/reviews', serviceData);
       fetch();
       handleClose();
@@ -66,18 +66,17 @@ export default function CreateReview({ showModal, handleClose, review,fetch }) {
     console.log('review', serviceData);
   }, [serviceData]);
   const handleChange = (e) => {
-      if(e.target.name==='simple-controlled'){
-        setserviceData({...serviceData,rate:e.target.value})
-      }
-      else{
-        setserviceData({ ...serviceData, [e.target.name]: e.target.value });
-      }
+    if (e.target.name === 'simple-controlled') {
+      setserviceData({ ...serviceData, rate: e.target.value });
+    } else {
+      setserviceData({ ...serviceData, [e.target.name]: e.target.value });
+    }
   };
   return (
     <div>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         className={classes.modal}
         open={showModal}
         onClose={handleClose}
@@ -90,40 +89,19 @@ export default function CreateReview({ showModal, handleClose, review,fetch }) {
         <Fade in={showModal}>
           <div className={classes.paper}>
             <CloseIcon className={classes.closeIcon} onClick={handleClose} />
-            <form className={classes.root} onSubmit={submitHandler} noValidate autoComplete="off">
-              <h2 id="transition-modal-title">Add service</h2>
+            <form className={classes.root} onSubmit={submitHandler} noValidate autoComplete='off'>
+              <h2 id='transition-modal-title'>Add Review</h2>
 
               <div>
-                <TextField
-                  id="standard-error"
-                  onChange={(e) => handleChange(e)}
-                  label="description"
-                  name="description"
-                  defaultValue={''}
-                  variant="outlined"
-                />
-                  <Rating name="simple-controlled" onChange={e=>handleChange(e)} value={setserviceData.rate} precision={1} />
+                <TextField id='standard-error' onChange={(e) => handleChange(e)} label='your feedback' name='description' defaultValue={''} variant='outlined' />
+                <Rating name='simple-controlled' onChange={(e) => handleChange(e)} value={setserviceData.rate} precision={1} />
               </div>
-             
-        
-           
-              <Button
-                onClick={handleClose}
-                variant="contained"
-                size="large"
-                className={classes.Closebutton}
-                startIcon={<CloseIcon />}
-              >
-                Close
+
+              <Button onClick={handleClose} variant='contained' size='large' className={classes.Closebutton} startIcon={<CloseIcon />}>
+                Cancel
               </Button>
-              <Button
-                variant="contained"
-                size="large"
-                type="submit"
-                className={classes.Savebutton}
-                startIcon={<SaveIcon />}
-              >
-                Create
+              <Button variant='contained' size='large' type='submit' className={classes.Savebutton} startIcon={<SaveIcon />}>
+                Submit
               </Button>
             </form>
           </div>

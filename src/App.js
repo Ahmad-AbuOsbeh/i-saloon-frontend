@@ -1,6 +1,5 @@
 import AllBarbers from './components/allBarbers';
 import ClientProfile from './components/ClientProfile/ClientProfile';
-// import Products from './components/Products';
 import BarberProfile from './components/barber/BarberProfile';
 import Home from './components/home/';
 import Login from './components/auth/Login';
@@ -9,7 +8,21 @@ import NavBar from './components/nav';
 import { useSelector } from 'react-redux';
 import Footer from './components/footer';
 import CheckOut from './components/checkout/CheckOut';
+import { handleSignUp } from '../src/store/actions';
+import { useDispatch } from 'react-redux';
+import { React, useState, useEffect } from 'react';
+import cookie from 'react-cookies';
+
 function App() {
+  const dispatch = useDispatch();
+  //did mount
+  useEffect(() => {
+    const user = cookie.load('user');
+    if (user) {
+      dispatch(handleSignUp(user));
+    }
+  }, []);
+
   return (
     <>
       <Router>

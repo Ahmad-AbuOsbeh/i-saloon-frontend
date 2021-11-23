@@ -46,7 +46,6 @@ function Services({ barberId }) {
 
   async function fetchSerivces() {
     const response = await instance.get(`/barber/services/0/${barberId}`);
-    console.log(response.data);
     dispatch(getServicesAction(response.data.rows));
   }
   useEffect(() => {
@@ -72,7 +71,6 @@ function Services({ barberId }) {
     if (prop.includes(name)) return setProp(() => prop.filter((desName) => desName !== name));
     setProp([...prop, name]);
   }
-  // console.log(role ==='barber' && userId === Number(barberId) &&  isloggedIn)
 
   const barberIds = Number(barberId);
   return (
@@ -83,11 +81,11 @@ function Services({ barberId }) {
       <div className={styles.productButton}>
         {role === 'barber' && userId === barberIds && isloggedIn ? (
           <>
-            <ServiceButton barberId={barberId} name="Service" />
+            <ServiceButton barberId={barberId} name='Service' />
           </>
         ) : (
           <Link to={`/checkout/${barberId}`}>
-            <i class="far fa-calendar-plus" />
+            <i class='far fa-calendar-plus' />
             <span>Book an Appointment</span>
           </Link>
         )}
@@ -96,7 +94,7 @@ function Services({ barberId }) {
       {listOfServices?.map((ser) => (
         <div className={styles.container} key={ser.id}>
           <div className={!prop.includes(ser.service_name) ? styles.wrapper : styles.wrapper2}>
-            <img src="http://i.imgur.com/qM6QY03.jpg" alt="" />
+            <img src='http://i.imgur.com/qM6QY03.jpg' alt='' />
             <p>{ser.service_name}</p>
             <p>{ser.estimated_time} min</p>
             <div className={styles.btn}>
@@ -114,31 +112,26 @@ function Services({ barberId }) {
 
           <div className={!prop.includes(ser.service_name) ? styles.hidden : styles.wrapper3}>
             <p>{ser.description}</p>
-            <div className={styles.edit}>
-              <div>
-                <DeleteForeverOutlined onClick={() => deleteServiceHandler(ser)} />
-              </div>
+            {role === 'barber' && (
+              <div className={styles.edit}>
+                <div>
+                  <DeleteForeverOutlined onClick={() => deleteServiceHandler(ser)} />
+                </div>
 
-              <div>
-                <EditOutlined
-                  onClick={() => {
-                    updateServiceHandler();
-                    setService(ser);
-                  }}
-                />
+                <div>
+                  <EditOutlined
+                    onClick={() => {
+                      updateServiceHandler();
+                      setService(ser);
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       ))}
-      {modal && (
-        <UpdateserviceModal
-          handleClose={handleClose}
-          setListOfServices={setListOfServices}
-          showUpdateForm={modal}
-          service={service}
-        />
-      )}
+      {modal && <UpdateserviceModal handleClose={handleClose} setListOfServices={setListOfServices} showUpdateForm={modal} service={service} />}
     </div>
   );
 }

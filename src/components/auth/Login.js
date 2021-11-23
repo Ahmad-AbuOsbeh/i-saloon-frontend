@@ -7,13 +7,13 @@ import Auth from './SignUp';
 import useStyles from './signUpStyles';
 import { useDispatch } from 'react-redux';
 import { handleSignUp } from '../../store/actions';
-
+import cookie from 'react-cookies';
 import axios from '../../API/axios';
 import { useHistory } from 'react-router';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const classes = useStyles();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -34,8 +34,8 @@ const Login = () => {
       }
     );
     dispatch(handleSignUp(response.data));
-
-    history.push('/')
+    cookie.save('user', response.data);
+    history.push('/');
   }
   function validate(e) {
     e.preventDefault();
@@ -80,38 +80,38 @@ const Login = () => {
                   variant='outlined'
                   autoComplete='off'
                   InputLabelProps={{
-                    style: { color: '#fff' }, 
-                 }}
+                    style: { color: '#fff' },
+                  }}
                 />
               </FormControl>
               <FormControl fullWidth margin='normal'>
-              <TextField
-                label='Password'
-                name='password'
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setShowAlert(false);
-                }}
-                margin='normal'
-                variant='outlined'
-                autoComplete='off'
-                className={classes.TextField}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              InputLabelProps={{
-                  style: { color: '#fff' }, 
-               }}
-              />
- </FormControl>
+                <TextField
+                  label='Password'
+                  name='password'
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setShowAlert(false);
+                  }}
+                  margin='normal'
+                  variant='outlined'
+                  autoComplete='off'
+                  className={classes.TextField}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  InputLabelProps={{
+                    style: { color: '#fff' },
+                  }}
+                />
+              </FormControl>
               {showAlert ? <Alert severity='error'>{validationMessage}</Alert> : null}
               <Button variant='contained' fullWidth className={classes.nextButton} type='submit'>
                 Login
