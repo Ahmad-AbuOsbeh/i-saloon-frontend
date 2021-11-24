@@ -34,6 +34,7 @@ function CheckOut() {
   // fetch barber
   async function fetchBarber() {
     const response = await instance.get(`/barber/user/${id}`);
+    console.log('user', response.data);
     setUser(response.data);
   }
 
@@ -68,11 +69,11 @@ function CheckOut() {
 
         <div className={css.bill}>
           <div className={css.pic}>
-            <img src={`${user.profile_pic}`} alt='' />
+            <img src={user?.profile_pic} alt='' />
           </div>
           <div className={css.text}>
-            <h5>{user.shop_name}</h5>
-            <span>{user.address}</span>
+            <h5>{user?.shop_name}</h5>
+            <span>{user?.address}</span>
           </div>
           {cart.length > 0 &&
             cart.map((ser) => (
