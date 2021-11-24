@@ -19,6 +19,7 @@ function Card({ info, changePick, active, setUser, barberId }) {
   const [clientSubscriptions, setClientSubscriptions] = useState([]);
   const [barberSubscribers, setbarberSubscribers] = useState([]);
   const [rating, setrating] = useState(0);
+  const [randomSubs, setrandomSubs] = useState(0);
 
   // fetch client subscriptions
   async function fetchClientSubscriptions() {
@@ -38,6 +39,7 @@ function Card({ info, changePick, active, setUser, barberId }) {
     fetchSubscribers();
     //info?.rating ? info.rating : randomNumbers('rating')
     setrating(randomNumbers('rating'));
+    setrandomSubs(randomNumbers('subscribers'));
   }, []);
 
   // subscribe handler
@@ -132,7 +134,7 @@ function Card({ info, changePick, active, setUser, barberId }) {
                     <span>Rating</span>
                   </div>
                   <div className={`${styles.col3}`}>
-                    <h1>{barberSubscribers.length ? barberSubscribers.length : randomNumbers('subscribers')}</h1>
+                    <h1>{barberSubscribers.length ? barberSubscribers.length : randomSubs}</h1>
                     <span>Subscribers</span>
                   </div>
                   <div className={`${styles.col3} ${styles.last}`}>
