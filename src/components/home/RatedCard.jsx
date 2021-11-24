@@ -29,7 +29,7 @@ function RatedCard({ barber, clientSubscriptions, fetchClientSubscriptions }) {
     <div className={styles.wrapper}>
       <div className={styles.imgArea}>
         <div className={styles.innerArea}>
-          <img src={`${url}${barber.profile_pic}`} alt='' />
+          <img src={`${barber.profile_pic}`} alt='' />
         </div>
       </div>
       <div className={`${styles.icon} ${styles.arrow}`}>
