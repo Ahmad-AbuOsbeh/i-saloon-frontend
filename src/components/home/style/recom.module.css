@@ -37,6 +37,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  box-shadow: 0 0px 10px 5px whitesmoke;
 }
 .wrapper .icon {
   font-size: 17px;
@@ -162,9 +163,11 @@
 }
 .buttons button:first-child {
   margin-right: 10px;
+  color: #a38350;
 }
 .buttons button:last-child {
   margin-left: 10px;
+  color: #a38350;
 }
 .wrapper .social-share {
   display: flex;
