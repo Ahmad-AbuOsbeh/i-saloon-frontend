@@ -33,3 +33,7 @@
 .serDate {
   width: 7rem;
 }
+
+.notification {
+  min-width: 35rem;
+}

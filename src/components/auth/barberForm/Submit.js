@@ -5,10 +5,15 @@ import { useHistory } from 'react-router';
 import CustomStepper from '../Stepper';
 import { If, Then, Else } from 'react-if';
 import instance from '../../../API/axios';
+import { useDispatch } from 'react-redux';
+import { handleSignUp } from '../../../store/actions';
+import cookie from 'react-cookies';
 export const Submit = ({ steps, formData }) => {
   const [submitted, setSubmitted] = React.useState(false);
   const [verificationToken, setVerificationToken] = React.useState('');
   const history = useHistory();
+  const dispatch = useDispatch();
+
   async function submitData(e) {
     e.preventDefault();
     if (localStorage.getItem('token') === verificationToken && verificationToken !== '') {
@@ -20,7 +25,10 @@ export const Submit = ({ steps, formData }) => {
       };
       const response = await instance.post('/verify', data);
       if (response.data) {
+        dispatch(handleSignUp(response.data));
+        cookie.save('user', response.data);
       }
+
       history.push('/');
     } else {
       console.log('Wrong Token!!');

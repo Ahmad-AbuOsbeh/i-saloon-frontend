@@ -102,7 +102,7 @@ export default function RequestTickets() {
 
   return (
     <>
-      <div style={{ position: 'relative', zIndex: '51551313515' }}>
+      <div className={styles.notification} style={{ position: 'relative', zIndex: '51551313515' }}>
         {!allTickets.length ? (
           <NotificationsIcon
             aria-controls='customized-menu'
