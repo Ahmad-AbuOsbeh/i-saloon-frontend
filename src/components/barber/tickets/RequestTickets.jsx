@@ -135,7 +135,7 @@ export default function RequestTickets() {
         )}
         {/* <NotificationsNoneIcon aria-controls='customized-menu' aria-haspopup='true' variant='contained' onClick={handleClick} /> */}
 
-        <StyledMenu id='customized-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} style={{ paddingTop: '50px' }}>
+        <StyledMenu id='customized-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} style={{ paddingTop: '50px', minWidth: '35rem' }}>
           {allTickets?.map((ticket) => {
             return (
               <StyledMenuItem key={ticket.id} style={{ display: 'block', margin: 'auto' }}>
