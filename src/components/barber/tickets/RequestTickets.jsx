@@ -18,6 +18,7 @@ const StyledMenu = withStyles({
     border: '1px solid #a38350',
     backgroundColor: '#1f2024',
     height: '20rem',
+    minWidth: '35rem',
     paddingTop: '2rem',
     color: '#f1f1f1',
     zIndex: '8888811111111111156465135',
@@ -135,10 +136,10 @@ export default function RequestTickets() {
         )}
         {/* <NotificationsNoneIcon aria-controls='customized-menu' aria-haspopup='true' variant='contained' onClick={handleClick} /> */}
 
-        <StyledMenu id='customized-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} style={{ paddingTop: '50px', minWidth: '35rem' }}>
+        <StyledMenu id='customized-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} style={{ paddingTop: '50px' }}>
           {allTickets?.map((ticket) => {
             return (
-              <StyledMenuItem key={ticket.id} style={{ display: 'block', margin: 'auto' }}>
+              <StyledMenuItem key={ticket.id} id='iiii' style={{ display: 'block', margin: 'auto', minWidth: '35rem' }}>
                 <ListItemIcon
                   style={{
                     // marginTop:'1rem',
